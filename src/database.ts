@@ -6,8 +6,8 @@ async function getMysqlConnection() {
     host: "localhost",
     user: "root",
     database: "todo_db",
-    password: "password",
-    port: 3307,
+    password: "0486577@Mm",
+    port: 3306,
   });
   return conn;
 }
@@ -52,4 +52,28 @@ export async function getTodoById(todoId: number) {
   const result = await conn.query(`SELECT * FROM todos WHERE id=${todoId}`);
 
   return result[0];
+}
+
+export async function updateTodo(todoId: number, name: string) {
+  const conn = await getMysqlConnection();
+
+  const result = await conn.query(
+    `UPDATE todos SET name ='${name}' WHERE id=${todoId}`
+  );
+
+  return result[0];
+  
+}
+
+
+export async function deleteTodo(todoId:number){
+  const conn = await getMysqlConnection();
+
+  const result = await conn.query(
+    `DELETE FROM todos WHERE id = ${todoId}`
+  );
+
+  return result[0];
+
+
 }

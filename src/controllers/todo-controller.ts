@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { TodoModel } from "../models/todo-model";
-import { createTodo, getAllTodos, getTodoById } from "../database";
+import { createTodo, deleteTodo, getAllTodos, getTodoById, updateTodo } from "../database";
 
 export async function getTodoController(
   req: Request,
@@ -74,12 +74,50 @@ export async function createTodoController(
   }
 }
 
-function updateTodoController() {
+export async function updateTodoController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try{
+    const todoId = req.params.todoId;
+    const {name} = req.body;
+
+    
+    const result = await updateTodo(parseInt(todoId),name) as {
+      name: string;
+    }[];
+
+    res.status(201).json({
+      data: result,
+      message: "Todo updated successfully!",
+    });
+  
+  } catch (error: any) {
+    console.error(error);
+    next(error.message);
+  }
   //
 }
+export async function deleteTodoController(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try{
+    const todoId = req.params.todoId;
+    
+    const result = await deleteTodo(parseInt(todoId));
 
-function deleteTodoController() {
-  //
+    res.status(201).json({
+      message: "Todo updated successfully!",
+    });
+  
+  } catch (error: any) {
+    console.error(error);
+    next(error.message);
+  }
+  
 }
 
 export async function getAllTodoController(
