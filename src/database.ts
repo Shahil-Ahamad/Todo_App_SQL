@@ -6,8 +6,8 @@ async function getMysqlConnection() {
     host: "localhost",
     user: "root",
     database: "todo_db",
-    password: "0486577@Mm",
-    port: 3306
+    password: "password",
+    port: 3307,
   });
   return conn;
 }
@@ -15,7 +15,7 @@ async function getMysqlConnection() {
 export async function getAllTodos() {
   const conn = await getMysqlConnection();
 
-  const result = await conn.query("SELEC * FROM todos");
+  const result = await conn.query("SELECT * FROM todos");
 
   console.log("getAllTodos Result:", result[0]);
 
@@ -36,8 +36,20 @@ async function createTodosTable() {
   );
 }
 
-async function createTodo(name: string) {
-  // connection
-  // insert into table sql query run
-  // result return
+export async function createTodo(name: string) {
+  const conn = await getMysqlConnection();
+
+  const result = await conn.query(
+    `INSERT INTO todos (name) VALUES ('${name}');`
+  );
+
+  return result[0];
+}
+
+export async function getTodoById(todoId: number) {
+  const conn = await getMysqlConnection();
+
+  const result = await conn.query(`SELECT * FROM todos WHERE id=${todoId}`);
+
+  return result[0];
 }
