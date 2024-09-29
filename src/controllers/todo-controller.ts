@@ -110,7 +110,7 @@ export async function deleteTodoController(
     const result = await deleteTodo(parseInt(todoId));
 
     res.status(201).json({
-      message: "Todo updated successfully!",
+      message: "Todo Deleted Successfully!",
     });
   
   } catch (error: any) {
