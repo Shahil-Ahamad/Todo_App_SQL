@@ -6,8 +6,8 @@ async function getMysqlConnection() {
     host: "localhost",
     user: "root",
     database: "todo_db",
-    password: "password",
-    port: 3307,
+    password: "0486577@Mm",
+    port: 3306
   });
   return conn;
 }
