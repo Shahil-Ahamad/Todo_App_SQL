@@ -1,6 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { TodoModel } from "../models/todo-model";
-import { createTodo, deleteTodo, getAllTodos, getTodoById, updateTodo } from "../database";
+import {
+  createTodo,
+  deleteTodo,
+  getAllTodos,
+  getTodoById,
+  updateTodo,
+} from "../database";
 
 export async function getTodoController(
   req: Request,
@@ -14,20 +20,6 @@ export async function getTodoController(
     return;
   }
 
-  // const myTodoModel = new TodoModel();
-
-  // const todo = myTodoModel.getTodo(parseInt(todoId as string));
-
-  // if (!todo) {
-  //   res.status(404).json({
-  //     messagge: "todo not found",
-  //   });
-  //   return;
-  // }
-
-  /**
-   * Get the data from database
-   */
   const result = (await getTodoById(parseInt(todoId))) as {
     id: number;
     name: string;
@@ -79,12 +71,11 @@ export async function updateTodoController(
   res: Response,
   next: NextFunction
 ) {
-  try{
+  try {
     const todoId = req.params.todoId;
-    const {name} = req.body;
+    const { name } = req.body;
 
-    
-    const result = await updateTodo(parseInt(todoId),name) as {
+    const result = (await updateTodo(parseInt(todoId), name)) as {
       name: string;
     }[];
 
@@ -92,7 +83,6 @@ export async function updateTodoController(
       data: result,
       message: "Todo updated successfully!",
     });
-  
   } catch (error: any) {
     console.error(error);
     next(error.message);
@@ -104,20 +94,18 @@ export async function deleteTodoController(
   res: Response,
   next: NextFunction
 ) {
-  try{
+  try {
     const todoId = req.params.todoId;
-    
+
     const result = await deleteTodo(parseInt(todoId));
 
     res.status(201).json({
       message: "Todo Deleted Successfully!",
     });
-  
   } catch (error: any) {
     console.error(error);
     next(error.message);
   }
-  
 }
 
 export async function getAllTodoController(

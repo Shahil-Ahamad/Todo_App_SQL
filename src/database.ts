@@ -62,18 +62,12 @@ export async function updateTodo(todoId: number, name: string) {
   );
 
   return result[0];
-  
 }
 
-
-export async function deleteTodo(todoId:number){
+export async function deleteTodo(todoId: number) {
   const conn = await getMysqlConnection();
 
-  const result = await conn.query(
-    `DELETE FROM todos WHERE id = ${todoId}`
-  );
+  const result = await conn.query(`DELETE FROM todos WHERE id = ${todoId}`);
 
   return result[0];
-
-
 }
