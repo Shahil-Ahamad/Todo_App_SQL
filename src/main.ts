@@ -3,8 +3,6 @@ import {
   createTodoController,
   getAllTodoController,
   getTodoController,
-  updateTodoController,
-  deleteTodoController,
 } from "./controllers/todo-controller";
 
 const PORT = 4000;
@@ -15,8 +13,8 @@ app.use(express.json());
 
 app.get("/get-todo/:todoId", getTodoController);
 app.post("/create-todo", createTodoController);
-app.put("/update-todo/:todoId", updateTodoController);
-app.delete("/delete-todo/:todoId", deleteTodoController);
+app.post("/update-todo/:todoId", createTodoController);
+app.delete("/delete-todo", getTodoController);
 app.get("/get-all-todos", getAllTodoController);
 
 app.listen(PORT, () => {
