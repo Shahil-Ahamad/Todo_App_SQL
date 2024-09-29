@@ -36,8 +36,56 @@ async function createTodosTable() {
   );
 }
 
-async function createTodo(name: string) {
-  // connection
-  // insert into table sql query run
-  // result return
+export async function createTodo(name: string, status: string) {
+  const conn = await getMysqlConnection();
+
+  const [result]: any = await conn.query(
+    `INSERT INTO todos (Name, Status) VALUES (?, ?)`,
+    [name, status]
+  );
+
+  const insertedId = result.insertId;
+
+  const [newTodo]: any = await conn.query(
+    `SELECT * FROM todos WHERE Id = ?`,
+    [insertedId]
+  );
+
+  return newTodo[0];
+}
+
+
+export async function updateTodo(
+  todoId: number,
+  name: string,
+  status: string
+) {
+  const conn = await getMysqlConnection();
+
+  const [result]: any = await conn.query(
+    `UPDATE todos SET Name = ?, Status = ? WHERE Id = ?`,
+    [name, status, todoId]
+  );
+
+  if (result.affectedRows === 0) {
+    return null;
+  }
+
+  const [updatedTodo]: any = await conn.query(
+    `SELECT * FROM todos WHERE Id = ?`,
+    [todoId]
+  );
+
+  return updatedTodo[0];
+}
+
+export async function deleteTodo(todoId: number) {
+  const conn = await getMysqlConnection();
+
+  const [result]: any = await conn.query(
+    `DELETE FROM todos WHERE Id = ?`,
+    [todoId]
+  );
+
+  return result.affectedRows > 0;
 }
