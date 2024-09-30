@@ -29,18 +29,19 @@ async function createTodosTable() {
     `
     CREATE TABLE IF NOT EXISTS todos (
       id INT PRIMARY KEY AUTO_INCREMENT,
-      name VARCHAR(255),
+      task VARCHAR(255),
+      status VARCHAR(255),
       created_at DATETIME DEFAULT(NOW())
     );
     `
   );
 }
 
-export async function createTodo(name: string) {
+export async function createTodo(task: string,status:string) {
   const conn = await getMysqlConnection();
 
   const result = await conn.query(
-    `INSERT INTO todos (name) VALUES ('${name}');`
+    `INSERT INTO todos (task,status) VALUES ('${task}','${status}');`
   );
 
   return result[0];
@@ -54,11 +55,11 @@ export async function getTodoById(todoId: number) {
   return result[0];
 }
 
-export async function updateTodo(todoId: number, name: string) {
+export async function updateTodo(todoId: number, task: string,status:string) {
   const conn = await getMysqlConnection();
 
   const result = await conn.query(
-    `UPDATE todos SET name ='${name}' WHERE id=${todoId}`
+    `UPDATE todos SET task ='${task}' status = '${status}' WHERE id=${todoId}`
   );
 
   return result[0];

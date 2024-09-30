@@ -22,7 +22,8 @@ export async function getTodoController(
 
   const result = (await getTodoById(parseInt(todoId))) as {
     id: number;
-    name: string;
+    task: string;
+    status:string;
     created_at: Date;
   }[];
 
@@ -51,9 +52,10 @@ export async function createTodoController(
 
     console.log("body", body);
 
-    const name = body.name;
+    const task = body.task;
+    const  status = body.status;
 
-    const result = await createTodo(name);
+    const result = await createTodo(task,status);
 
     console.log("result", result);
 
@@ -73,10 +75,11 @@ export async function updateTodoController(
 ) {
   try {
     const todoId = req.params.todoId;
-    const { name } = req.body;
+    const { task,status} = req.body;
 
-    const result = (await updateTodo(parseInt(todoId), name)) as {
-      name: string;
+    const result = (await updateTodo(parseInt(todoId), task,status)) as {
+      task: string;
+      status:string;
     }[];
 
     res.status(201).json({
