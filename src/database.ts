@@ -8,9 +8,34 @@ async function getMysqlConnection() {
     database: "todo_db",
     password: "0486577@Mm",
     port: 3306,
+    connectionLimit: 10,
+    connectTimeout: 300,
   });
   return conn;
 }
+
+
+function createMySQLPool() {
+  const pool = mysql.createPool({
+    host: "localhost",
+    user: "root",
+    database: "todo_db",
+    password: "0486577@Mm",
+    waitForConnections: true,
+    connectionLimit: 10,
+    connectTimeout: 300,
+    maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
+    idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+  });
+  return pool;
+}
+
+
+const myPool = createMySQLPool();
+
 
 export async function getAllTodos() {
   const conn = await getMysqlConnection();
@@ -21,6 +46,15 @@ export async function getAllTodos() {
 
   return result[0];
 }
+
+export async function getAllTodosWithPool() {
+  const result = await myPool.query("SELECT * FROM todos");
+
+  console.log("Result With Pool",result);
+
+  return result[0];
+}
+
 
 async function createTodosTable() {
   const conn = await getMysqlConnection();
@@ -37,7 +71,7 @@ async function createTodosTable() {
   );
 }
 
-export async function createTodo(task: string,status:string) {
+export async function createTodo(task: string, status: string) {
   const conn = await getMysqlConnection();
 
   const result = await conn.query(
@@ -55,7 +89,7 @@ export async function getTodoById(todoId: number) {
   return result[0];
 }
 
-export async function updateTodo(todoId: number, task: string,status:string) {
+export async function updateTodo(todoId: number, task: string, status: string) {
   const conn = await getMysqlConnection();
 
   const result = await conn.query(

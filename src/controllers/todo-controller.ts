@@ -4,6 +4,7 @@ import {
   createTodo,
   deleteTodo,
   getAllTodos,
+  getAllTodosWithPool,
   getTodoById,
   updateTodo,
 } from "../database";
@@ -117,7 +118,7 @@ export async function getAllTodoController(
   next: NextFunction
 ) {
   try {
-    const result = await getAllTodos();
+    const result = await getAllTodosWithPool();
 
     res.json({
       data: result,
