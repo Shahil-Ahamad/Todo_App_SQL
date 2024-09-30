@@ -14,7 +14,6 @@ async function getMysqlConnection() {
   return conn;
 }
 
-
 function createMySQLPool() {
   const pool = mysql.createPool({
     host: "localhost",
@@ -33,9 +32,7 @@ function createMySQLPool() {
   return pool;
 }
 
-
 const myPool = createMySQLPool();
-
 
 export async function getAllTodos() {
   const conn = await getMysqlConnection();
@@ -50,11 +47,10 @@ export async function getAllTodos() {
 export async function getAllTodosWithPool() {
   const result = await myPool.query("SELECT * FROM todos");
 
-  console.log("Result With Pool",result);
+  console.log("Result With Pool", result);
 
   return result[0];
 }
-
 
 async function createTodosTable() {
   const conn = await getMysqlConnection();
