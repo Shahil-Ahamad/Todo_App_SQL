@@ -2,11 +2,15 @@ import { NextFunction, Request, Response } from "express";
 import { TodoModel } from "../models/todo-model";
 import {
   createTodo,
+  createTodoWithPool,
   deleteTodo,
+  deleteTodoWithPool,
   getAllTodos,
   getAllTodosWithPool,
   getTodoById,
+  getTodoByIdWithPool,
   updateTodo,
+  updateTodoWithPool,
 } from "../database";
 
 export async function getTodoController(
@@ -21,10 +25,10 @@ export async function getTodoController(
     return;
   }
 
-  const result = (await getTodoById(parseInt(todoId))) as {
+  const result = (await getTodoByIdWithPool(parseInt(todoId))) as {
     id: number;
     task: string;
-    status:string;
+    status: string;
     created_at: Date;
   }[];
 
@@ -33,7 +37,6 @@ export async function getTodoController(
   if (!result.length) {
     res.status(404).json({
       message: "todo not found",
-      data: null,
     });
   } else {
     res.json({
@@ -54,9 +57,9 @@ export async function createTodoController(
     console.log("body", body);
 
     const task = body.task;
-    const  status = body.status;
+    const status = body.status;
 
-    const result = await createTodo(task,status);
+    const result = await createTodoWithPool(task, status);
 
     console.log("result", result);
 
@@ -76,12 +79,14 @@ export async function updateTodoController(
 ) {
   try {
     const todoId = req.params.todoId;
-    const { task,status} = req.body;
+    const { task, status } = req.body;
 
-    const result = (await updateTodo(parseInt(todoId), task,status)) as {
+    const result = (await updateTodo(parseInt(todoId), task, status)) as {
       task: string;
-      status:string;
+      status: string;
     }[];
+
+    console.log("Updated Data", result);
 
     res.status(201).json({
       data: result,
@@ -101,7 +106,7 @@ export async function deleteTodoController(
   try {
     const todoId = req.params.todoId;
 
-    const result = await deleteTodo(parseInt(todoId));
+    const result = await deleteTodoWithPool(parseInt(todoId));
 
     res.status(201).json({
       message: "Todo Deleted Successfully!",
@@ -119,6 +124,8 @@ export async function getAllTodoController(
 ) {
   try {
     const result = await getAllTodosWithPool();
+
+    console.log("Result",result);
 
     res.json({
       data: result,

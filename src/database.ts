@@ -39,15 +39,11 @@ export async function getAllTodos() {
 
   const result = await conn.query("SELECT * FROM todos");
 
-  console.log("getAllTodos Result:", result[0]);
-
   return result[0];
 }
 
 export async function getAllTodosWithPool() {
   const result = await myPool.query("SELECT * FROM todos");
-
-  console.log("Result With Pool", result);
 
   return result[0];
 }
@@ -77,6 +73,14 @@ export async function createTodo(task: string, status: string) {
   return result[0];
 }
 
+export async function createTodoWithPool(task: string, status: string) {
+  const result = await myPool.query(
+    `INSERT INTO todos (task,status) VALUES ('${task}','${status}');`
+  );
+
+  return result[0];
+}
+
 export async function getTodoById(todoId: number) {
   const conn = await getMysqlConnection();
 
@@ -85,11 +89,29 @@ export async function getTodoById(todoId: number) {
   return result[0];
 }
 
+export async function getTodoByIdWithPool(todoId: number) {
+  const result = await myPool.query(`SELECT * FROM todos WHERE id = ${todoId}`);
+
+  return result[0];
+}
+
 export async function updateTodo(todoId: number, task: string, status: string) {
   const conn = await getMysqlConnection();
 
   const result = await conn.query(
-    `UPDATE todos SET task ='${task}' status = '${status}' WHERE id=${todoId}`
+    `UPDATE todos SET task ='${task}'  , status = '${status}' WHERE id=${todoId}`
+  );
+
+  return result[0];
+}
+
+export async function updateTodoWithPool(
+  todoId: number,
+  task: string,
+  status: string
+) {
+  const result = await myPool.query(
+    `UPDATE todos SET task ='${task}' , status = '${status}' WHERE id=${todoId}`
   );
 
   return result[0];
@@ -101,4 +123,10 @@ export async function deleteTodo(todoId: number) {
   const result = await conn.query(`DELETE FROM todos WHERE id = ${todoId}`);
 
   return result[0];
+}
+
+export async function deleteTodoWithPool(todoId: number) {
+  const result = await myPool.query(`DELETE FROM todos WHERE id = ${todoId}`);
+
+  return result;
 }
