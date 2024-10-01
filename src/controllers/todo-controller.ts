@@ -125,7 +125,7 @@ export async function getAllTodoController(
   try {
     const result = await getAllTodosWithPool();
 
-    console.log("Result",result);
+    console.log("Result", result);
 
     res.json({
       data: result,

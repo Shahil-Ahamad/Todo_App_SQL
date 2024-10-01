@@ -15,8 +15,8 @@ app.use(express.json());
 
 app.get("/get-todo/:todoId", getTodoController); // done
 app.post("/create-todo", createTodoController); // done
-app.put("/update-todo/:todoId", updateTodoController);//done
-app.delete("/delete-todo/:todoId", deleteTodoController);//done
+app.put("/update-todo/:todoId", updateTodoController); //done
+app.delete("/delete-todo/:todoId", deleteTodoController); //done
 app.get("/get-all-todos", getAllTodoController); // done
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
