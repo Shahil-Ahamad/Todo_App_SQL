@@ -12,7 +12,14 @@ import {
   updateTodo,
   updateTodoWithPool,
 } from "../database";
-import { createTodoMongodb, getAllTodoMongodb } from "../mongoose/query";
+import {
+  createTodoMongodb,
+  deleteTodoMongodb,
+  getAllTodoMongodb,
+  getTodoByIdMongodb,
+  updateTodoMongodb,
+} from "../mongoose/query";
+
 
 export async function getTodoController(
   req: Request,
@@ -22,27 +29,28 @@ export async function getTodoController(
   const todoId = req.params.todoId;
 
   if (!todoId) {
-    next("Please provide valid todoId");
-    return;
+    return next("Please provide a valid todoId"); // Return next() to stop further processing
   }
 
-  const result = (await getTodoByIdWithPool(parseInt(todoId))) as {
-    id: number;
-    task: string;
-    status: string;
-    created_at: Date;
-  }[];
+  //MySQL
+  // const result = await getTodoByIdWithPool(parseInt(todoId));
+
+  // MongoDB
+  const result = await getTodoByIdMongodb(parseInt(todoId));
+
+
 
   console.log("result", result);
 
-  if (!result.length) {
-    res.status(404).json({
-      message: "todo not found",
+  if (!result) {
+
+    return res.status(404).json({
+      message: "Todo not found",
     });
   } else {
     res.json({
-      message: "get todo by id",
-      data: result[0],
+      message: "Get todo by ID",
+      data: result, 
     });
   }
 }
@@ -64,13 +72,13 @@ export async function createTodoController(
 
     // const result = await createTodoWithPool(task, status);
 
-    const result = await createTodoMongodb(task,description,status);
+    const result = await createTodoMongodb(task, description, status);
 
     console.log("result", result);
 
     res.status(201).json({
       message: "todo created successfully",
-      todo:result,
+      todo: result,
     });
   } catch (error: any) {
     console.error(error);
@@ -85,12 +93,16 @@ export async function updateTodoController(
 ) {
   try {
     const todoId = req.params.todoId;
-    const { task, status } = req.body;
+    const { task, description, status } = req.body;
 
-    const result = (await updateTodo(parseInt(todoId), task, status)) as {
-      task: string;
-      status: string;
-    }[];
+    //MySQL
+    // const result = (await updateTodo(parseInt(todoId), task, status)) as {
+    //   task: string;
+    //   status: string;
+    // }[];
+
+    //MongoDB
+    const result = await updateTodoMongodb(parseInt(todoId), task, description, status);
 
     console.log("Updated Data", result);
 
@@ -112,7 +124,11 @@ export async function deleteTodoController(
   try {
     const todoId = req.params.todoId;
 
-    const result = await deleteTodoWithPool(parseInt(todoId));
+    //MySQL
+    // const result = await deleteTodoWithPool(parseInt(todoId));
+
+    //mongoDB
+    const result = await deleteTodoMongodb(parseInt(todoId));
 
     res.status(201).json({
       message: "Todo Deleted Successfully!",
@@ -129,18 +145,10 @@ export async function getAllTodoController(
   next: NextFunction
 ) {
   try {
-    // const result = await getAllTodosWithPool();
+    // const result = await getAllTodosWithPool()
 
-    const body = req.body;
-
-    console.log("body", body);
-
-    const task = body.task;
-    const status = body.status;
-
-    const description = body.description;
-
-    const result = await getAllTodoMongodb(task,description,status);
+    const { task, description, status } = req.body;
+    const result = await getAllTodoMongodb(task, description, status);
 
     console.log("Result", result);
 
