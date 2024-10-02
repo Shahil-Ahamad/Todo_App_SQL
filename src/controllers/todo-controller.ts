@@ -12,6 +12,7 @@ import {
   updateTodo,
   updateTodoWithPool,
 } from "../database";
+import { createTodoMongodb } from "../mongoose/query";
 
 export async function getTodoController(
   req: Request,
@@ -59,12 +60,17 @@ export async function createTodoController(
     const task = body.task;
     const status = body.status;
 
-    const result = await createTodoWithPool(task, status);
+    const description = body.description;
+
+    // const result = await createTodoWithPool(task, status);
+
+    const result = await createTodoMongodb(task,description);
 
     console.log("result", result);
 
     res.status(201).json({
       message: "todo created successfully",
+      todo:result,
     });
   } catch (error: any) {
     console.error(error);
