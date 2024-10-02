@@ -41,6 +41,15 @@ async function run() {
     await collection.deleteOne({ name: "Shyam Gupta" });
     const deletedUsers = await collection.find().toArray();
     console.log("deleted users", deletedUsers);
+
+
+
+
+    await collection.insertOne({ name: "John", age: 30 });
+    const user2 = await collection.find().toArray();
+    console.log("users", user2);
+
+
   } finally {
     await client.close();
   }
