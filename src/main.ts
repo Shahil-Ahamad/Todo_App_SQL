@@ -6,8 +6,19 @@ import {
   getTodoController,
   updateTodoController,
 } from "./controllers/todo-controller";
+import { createDBConnection } from "./mongoose/db";
+
+
 
 const PORT = 4000;
+
+
+
+createDBConnection()
+  .then((db) => console.log("connected to db"))
+  .catch((err) => {
+    console.error("Failed To Connect To db", err);
+  });
 
 const app = express();
 

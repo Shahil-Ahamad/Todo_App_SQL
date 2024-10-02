@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
-  task: { type: String, required: true, unique: true }, // Name is required
-  description: { type: String, required: true }, // Email must be unique
+  task: { type: String, required: true, unique: true }, 
+  description: { type: String, required: true },
   status: {
     type: String,
     enum: ["todo", "in_progress", "completed"],

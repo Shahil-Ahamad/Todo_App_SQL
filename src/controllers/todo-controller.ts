@@ -12,7 +12,7 @@ import {
   updateTodo,
   updateTodoWithPool,
 } from "../database";
-import { createTodoMongodb } from "../mongoose/query";
+import { createTodoMongodb, getAllTodoMongodb } from "../mongoose/query";
 
 export async function getTodoController(
   req: Request,
@@ -64,7 +64,7 @@ export async function createTodoController(
 
     // const result = await createTodoWithPool(task, status);
 
-    const result = await createTodoMongodb(task,description);
+    const result = await createTodoMongodb(task,description,status);
 
     console.log("result", result);
 
@@ -129,7 +129,18 @@ export async function getAllTodoController(
   next: NextFunction
 ) {
   try {
-    const result = await getAllTodosWithPool();
+    // const result = await getAllTodosWithPool();
+
+    const body = req.body;
+
+    console.log("body", body);
+
+    const task = body.task;
+    const status = body.status;
+
+    const description = body.description;
+
+    const result = await getAllTodoMongodb(task,description,status);
 
     console.log("Result", result);
 
