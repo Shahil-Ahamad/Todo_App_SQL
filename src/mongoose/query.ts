@@ -29,13 +29,13 @@ export async function updateTodoMongodb(
   description: string,
   status: string
 ) {
-  const result = await TodoModel.findByIdAndUpdate(todoId,
-    {
-      $set:{
-        task,
-        description,
-        status
-      }});
+  const result = await TodoModel.findByIdAndUpdate(todoId, {
+    $set: {
+      task,
+      description,
+      status,
+    },
+  });
   console.log("Updated todo:", result);
   return result;
 }

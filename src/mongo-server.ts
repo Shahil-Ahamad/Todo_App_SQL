@@ -25,6 +25,6 @@ async function run() {
     await client.close();
   }
 }
-run().catch((err) =>{
-    console.log("Failed to run mongo",err);
+run().catch((err) => {
+  console.log("Failed to run mongo", err);
 });

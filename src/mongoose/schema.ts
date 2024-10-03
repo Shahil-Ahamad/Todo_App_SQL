@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
-  task: { type: String, required: true, unique: true }, 
+  task: { type: String, required: true, unique: true },
   description: { type: String, required: true },
   status: {
     type: String,
@@ -11,7 +11,4 @@ const todoSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now },
 });
 
-
-export const TodoModel = mongoose.model("Todo",todoSchema);
-
-
+export const TodoModel = mongoose.model("Todo", todoSchema);

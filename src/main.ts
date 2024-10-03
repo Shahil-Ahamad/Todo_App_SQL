@@ -8,11 +8,7 @@ import {
 } from "./controllers/todo-controller";
 import { createDBConnection } from "./mongoose/db";
 
-
-
 const PORT = 4000;
-
-
 
 createDBConnection()
   .then((db) => console.log("connected to db"))

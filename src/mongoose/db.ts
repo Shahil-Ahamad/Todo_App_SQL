@@ -8,5 +8,3 @@ export async function createDBConnection() {
   const db = mongoose.connect(uri);
   return db;
 }
-
-
