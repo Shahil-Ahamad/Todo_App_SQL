@@ -12,7 +12,7 @@ import {
   updateTodo,
   updateTodoWithPool,
 } from "../database";
-import { createTodoMongodb, getAllTodoMongodb } from "../mongoose/query";
+import { createTodoMongodb, deleteTodoMongodb, getAllTodoMongodb } from "../mongoose/query";
 
 export async function getTodoController(
   req: Request,
@@ -112,7 +112,7 @@ export async function deleteTodoController(
   try {
     const todoId = req.params.todoId;
 
-    const result = await deleteTodoWithPool(parseInt(todoId));
+    const result = await deleteTodoMongodb(todoId);
 
     res.status(201).json({
       message: "Todo Deleted Successfully!",
