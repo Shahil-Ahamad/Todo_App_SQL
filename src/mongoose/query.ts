@@ -24,7 +24,7 @@ export async function getAllTodoMongodb(
   console.log("Fetched todos:", result);
   return result;
 }
-export async function getTodoByIdMongodb(todoId: number) {
+export async function getTodoByIdMongodb(todoId: string) {
   const result = await TodoModel.findById(todoId);
   return result;
 }
@@ -34,9 +34,9 @@ export async function updateTodoMongodb(
   description: string,
   status: string
 ) {
-  const result = await TodoModel.findByIdAndUpdate(todoId);
-  console.log("Updated todo:", result);
-  return result;
+  // const result = await TodoModel.findByIdAndUpdate(todoId);
+  // console.log("Updated todo:", result);
+  // return result;
 }
 
 

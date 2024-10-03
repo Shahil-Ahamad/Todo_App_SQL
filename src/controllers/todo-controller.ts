@@ -12,7 +12,7 @@ import {
   updateTodo,
   updateTodoWithPool,
 } from "../database";
-import { createTodoMongodb, deleteTodoMongodb, getAllTodoMongodb } from "../mongoose/query";
+import { createTodoMongodb, deleteTodoMongodb, getAllTodoMongodb, getTodoByIdMongodb } from "../mongoose/query";
 
 export async function getTodoController(
   req: Request,
@@ -26,23 +26,18 @@ export async function getTodoController(
     return;
   }
 
-  const result = (await getTodoByIdWithPool(parseInt(todoId))) as {
-    id: number;
-    task: string;
-    status: string;
-    created_at: Date;
-  }[];
+  const result = await getTodoByIdMongodb(todoId) 
 
   console.log("result", result);
 
-  if (!result.length) {
+  if (!result) {
     res.status(404).json({
       message: "todo not found",
     });
   } else {
     res.json({
       message: "get todo by id",
-      data: result[0],
+      data: result,
     });
   }
 }
