@@ -12,7 +12,12 @@ import {
   updateTodo,
   updateTodoWithPool,
 } from "../database";
-import { createTodoMongodb, deleteTodoMongodb, getAllTodoMongodb, getTodoByIdMongodb } from "../mongoose/query";
+import {
+  createTodoMongodb,
+  deleteTodoMongodb,
+  getAllTodoMongodb,
+  getTodoByIdMongodb,
+} from "../mongoose/query";
 
 export async function getTodoController(
   req: Request,
@@ -26,7 +31,7 @@ export async function getTodoController(
     return;
   }
 
-  const result = await getTodoByIdMongodb(todoId) 
+  const result = await getTodoByIdMongodb(todoId);
 
   console.log("result", result);
 
@@ -59,13 +64,13 @@ export async function createTodoController(
 
     // const result = await createTodoWithPool(task, status);
 
-    const result = await createTodoMongodb(task,description,status);
+    const result = await createTodoMongodb(task, description, status);
 
     console.log("result", result);
 
     res.status(201).json({
       message: "todo created successfully",
-      todo:result,
+      todo: result,
     });
   } catch (error: any) {
     console.error(error);
@@ -124,15 +129,9 @@ export async function getAllTodoController(
   next: NextFunction
 ) {
   try {
-
-
     // const result = await getAllTodosWithPool()
 
-
-
-    const { task, description, status } = req.body;
-    
-    const result = await getAllTodoMongodb(task,description,status);
+    const result = await getAllTodoMongodb();
 
     console.log("Result", result);
 

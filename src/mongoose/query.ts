@@ -14,13 +14,8 @@ export async function createTodoMongodb(
   return result;
 }
 
-export async function getAllTodoMongodb(
-  task: string,
-  description: string,
-  status: string
-) { 
-
-  const result = await TodoModel.find( task, description, status  );
+export async function getAllTodoMongodb() {
+  const result = await TodoModel.find();
   console.log("Fetched todos:", result);
   return result;
 }
@@ -38,7 +33,6 @@ export async function updateTodoMongodb(
   // console.log("Updated todo:", result);
   // return result;
 }
-
 
 export async function deleteTodoMongodb(todoId: string) {
   const result = await TodoModel.findByIdAndDelete(todoId);
