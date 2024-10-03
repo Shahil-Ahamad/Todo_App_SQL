@@ -24,14 +24,20 @@ export async function getTodoByIdMongodb(todoId: string) {
   return result;
 }
 export async function updateTodoMongodb(
-  todoId: string,
+  todoId: any,
   task: string,
   description: string,
   status: string
 ) {
-  // const result = await TodoModel.findByIdAndUpdate(todoId);
-  // console.log("Updated todo:", result);
-  // return result;
+  const result = await TodoModel.findByIdAndUpdate(todoId,
+    {
+      $set:{
+        task,
+        description,
+        status
+      }});
+  console.log("Updated todo:", result);
+  return result;
 }
 
 export async function deleteTodoMongodb(todoId: string) {

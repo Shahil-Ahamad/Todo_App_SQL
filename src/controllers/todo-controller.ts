@@ -17,6 +17,7 @@ import {
   deleteTodoMongodb,
   getAllTodoMongodb,
   getTodoByIdMongodb,
+  updateTodoMongodb,
 } from "../mongoose/query";
 
 export async function getTodoController(
@@ -85,12 +86,9 @@ export async function updateTodoController(
 ) {
   try {
     const todoId = req.params.todoId;
-    const { task, status } = req.body;
+    const { task, description, status } = req.body;
 
-    const result = (await updateTodo(parseInt(todoId), task, status)) as {
-      task: string;
-      status: string;
-    }[];
+    const result = await updateTodoMongodb(todoId, task, description, status);
 
     console.log("Updated Data", result);
 
